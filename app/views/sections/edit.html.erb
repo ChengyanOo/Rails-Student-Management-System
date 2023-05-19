@@ -1,0 +1,67 @@
+<div class="container mt-3">
+<h3>Edit Section</h3>
+  <%= form_for @section, html: {class: "form"} do |f| %>
+
+    <%= f.hidden_field :campus, value: "COL" %>
+
+    <div class="form-group mt-3">
+      <%= f.label :start_time, "Start Time" %>
+      <%= f.text_field :start_time, class: "form-control" %>
+    </div>
+
+    <div class="form-group mt-3">
+      <%= f.label :end_time, "End Time" %>
+      <%= f.text_field :end_time, class: "form-control" %>
+    </div>
+    
+    <div class="form-group mt-3">
+      <%= f.label :num_of_days, "Number of Days" %>
+      <%= f.text_field :num_of_days, class: "form-control" %>
+    </div>
+      
+    <div class="form-group mt-3">
+      <%= f.label :campus %>
+      <%= f.text_field :campus, class: "form-control" %>
+    </div>
+
+     <div class="form-group mt-3">
+      <%= f.label :term %>
+      <%= f.text_field :term, class: "form-control" %>
+    </div>
+
+    <div class="form-group mt-3">
+      <%= f.select :instructionMode, ["In Person", "Distance Learning"], class: "custom-select"%>
+    </div>
+
+     <div class="form-group mt-3">
+      <%= f.label :graders_needed, "Graders Needed" %>
+      <%= f.number_field :graders_needed, class: "form-control" %>
+    </div>
+
+    <div class="form-group mt-3">
+        <%= f.check_box :is_lab, class: "form-check-input" %>
+        <%= f.label :is_lab, "Has Lab", class: "form-check-label" %>
+    </div>
+
+    <div class="form-group mt-3">
+        <h5>Meets on</h5>
+
+        <%= f.check_box :monday, class: "btn-check" %>
+        <%= f.label :monday, "Mon", class: "btn btn-outline-primary" %>
+
+        <%= f.check_box :tuesday, class: "btn-check" %>
+        <%= f.label :tuesday, "Tue", class: "btn btn-outline-primary" %>
+
+        <%= f.check_box :wednesday, class: "btn-check" %>
+        <%= f.label :wednesday, "Wed", class: "btn btn-outline-primary" %>
+
+        <%= f.check_box :thursday, class: "btn-check" %>
+        <%= f.label :thursday, "Thu", class: "btn btn-outline-primary" %>
+
+        <%= f.check_box :friday, class: "btn-check" %>
+        <%= f.label :friday, "Fri", class: "btn btn-outline-primary" %>
+    </div>
+
+    <%= f.submit "Save Changes", class: "btn btn-primary mt-3" %>
+  <% end %>
+</div>

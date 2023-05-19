@@ -1,0 +1,97 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <!-- Navbar brand/logo -->
+
+        <a class="navbar-brand" href="#">Edit <%= resource_name.to_s.humanize %></a>
+        <!-- Navbar toggler for responsive design -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Course link -->
+                <li class="nav-item ml-auto">
+                  <% if user_signed_in? %>
+                    <%= link_to "Course Catalog", course_view_path, method: :get, class: 'nav-link' %>
+                  <% end %>
+                </li>
+            </ul>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                   <% if user_signed_in? %> 
+                        <%= link_to "Cancel Account", remove_user_path(), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?", "turbo-method": :delete }, class:"nav-link"%>
+                   <% end %>
+                </li>
+              </ul>
+
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                   <% if user_signed_in? %> 
+                        <%= link_to "Sign Out", destroy_user_session_path, data: { "turbo-method": :delete }, class: 'nav-link' %>
+                   <% end %>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">
+            </span><span class="text-black-50">
+              <%= f.label :email %><br />
+              <b><%= @current_user.email%></b>            
+            </span><span> </span></div>
+        </div>
+ 
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6"><label class="labels">Fist Name</label><input type="text" class="form-control" placeholder="<%= @current_user.first_name%>" disabled></div>
+                    <div class="col-md-6"><label class="labels">Lastname</label><input type="text" class="form-control" placeholder="<%= @current_user.last_name%>" disabled></div>
+                
+                      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+                      <% end %>
+
+                      <div class="field">
+                        <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+                        <%= f.password_field :password, autocomplete: "new-password", class:"form-control"%>
+                         <% if @minimum_password_length %>
+                          <em><%= @minimum_password_length %> characters minimum</em>
+                        <% end %>
+                      </div>
+
+                      <div class="field">
+                        <%= f.label :password_confirmation %><br />
+                        <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"form-control"%>
+                      </div>
+
+                      <div class="field">
+                         <%= f.label :current_password %> <i>(current password required to confirm changes)</i><br />
+                         <%= f.password_field :current_password, autocomplete: "current-password", class:"form-control"%>
+                      </div>
+
+                      <div class="mt-5 text-center">
+                        <%= f.submit "Update Password", class:"btn btn-primary profile-button", :style => 'background-color: #8AA1BF'%>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  </div>
+</div>
+<% end %>
+

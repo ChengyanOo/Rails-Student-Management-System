@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  instructor_id: 1
+  grader_is: 1
+  rating: 1
+  comments: MyString
+
+two:
+  instructor_id: 1
+  grader_is: 1
+  rating: 1
+  comments: MyString

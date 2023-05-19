@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  course: one
+  start_time: MyString
+  end_time: MyString
+  num_of_days: MyString
+  campus: MyString
+  term: MyString
+  in_person: false
+  graders_needed: 1
+
+two:
+  course: two
+  start_time: MyString
+  end_time: MyString
+  num_of_days: MyString
+  campus: MyString
+  term: MyString
+  in_person: false
+  graders_needed: 1

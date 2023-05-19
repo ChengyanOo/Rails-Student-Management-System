@@ -1,0 +1,71 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <!-- Navbar brand/logo -->
+        <a class="navbar-brand" href="#">Evaluation Page</a>
+        <!-- Navbar toggler for responsive design -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Course link -->
+                <li class="nav-item ml-auto">
+                  <% if user_signed_in? %>
+                    <%= link_to "Course Catalog", course_view_path, method: :get, class: 'nav-link' %>
+                  <% end %>
+                </li>
+            </ul>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                   <% if user_signed_in? %> 
+                        <%= link_to "Sign Out", destroy_user_session_path, data: { "turbo-method": :delete }, class: 'nav-link' %>
+                   <% end %>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<%= form_with model: @evaluation, url: evaluations_path do |form| %>
+<body>
+  <div class="container rounded bg-white mt-5 mb-5">
+    <div class="mt-5 text-center">
+      <div class="py-7">
+        <div class="mt-5 text-center">
+          <h4 class="text-right">New Evaluation</h4>
+        </div>
+        <div class="row mt-2">
+          <div>
+            <%= form.label :instructor_id %>
+            <%= form.number_field :instructor_id, value: current_user.id, disabled: true, class: "form-control"%>
+            <%= form.hidden_field :instructor_id, value: current_user.id%>
+          </div>
+          <div>
+            <%= form.label :grader_id %>
+            <%= form.collection_select :grader_id, User.all, :id, :email, {}, { :include_blank => false, class: 'form-control' } %>
+          </div>
+          <div>
+            <%= form.label :course_id %>
+            <%= form.collection_select :course_id, Course.all, :id, :name, {}, { :include_blank => false, class: 'form-control' } %>
+          </div>
+          <div>
+            <%= form.label :rating %>
+            <%= form.number_field :rating, min: 1, max: 5, class: 'form-control'%>
+          </div>
+          <div>
+            <%= form.label :comments %>
+            <%= form.text_area :comments, class: 'form-control'%>
+          </div>
+          <div class="mt-5 text-center">
+              <%= form.submit "Create Evaluation", class:"btn btn-primary profile-button", :style => 'background-color: #8AA1BF'%>
+          </div>
+        </div>
+      </div>     
+    </div>
+  </div>
+</body>
+<% end %>

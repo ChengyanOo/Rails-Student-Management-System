@@ -1,0 +1,209 @@
+<%= stylesheet_link_tag "googleFont", media: 'all', 'data-turbolinks-track': 'reload'%>
+<%= stylesheet_link_tag "courseView", media: 'all', 'data-turbolinks-track': 'reload'%>
+
+<% if user_signed_in? %>
+  <% case current_user.role %>
+    <% when 'Admin' %>
+      <%= render 'layouts/admin_nav' %>
+    <% when 'Instructor' %>
+      <%= render 'layouts/instructor_nav' %>
+    <% else %>
+      <%= render 'layouts/student_nav' %>
+  <% end %>
+<% else %>
+  <%= render 'layouts/guest_nav' %>
+<% end %>
+
+<!-- Main content container -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Header for course and section data -->
+            <div class="align">
+            <h3>Courses and Sections</h3>
+                <% if (current_user) && (current_user.role.eql? "Admin") && (current_user.is_approved) %>
+                    <%= button_to "Add a Course", new_course_path, method: :get, class: "btn ms-2 Hiver-2023-3-hex" %>       
+                <% end %> 
+            </div>
+            <!-- Container for course and section data -->
+            <div id="course-section-data">
+                <div class="mt-5">
+                    <!-- Iterate through courses -->
+                    <% if @courses.any? %>
+                    <ul>
+                    <% @courses.each do |course| %>
+                        <div class="row mt-3">
+                            <div class="col-md-12 mx-auto">
+                                <!-- Course card -->
+                                <div class="card p-4">
+                                    <div class="d-flex p-2 justify-content-between">
+                                    <h4 class="card-title">
+                                        <%= 'CSE' +course.class_number.to_s %>
+                                    </h4>
+                                    <% if (current_user) && (current_user.role.eql? "Admin") && (current_user.is_approved)  %>
+                                        <div class="btn-group" role="group">
+                                            <%= button_to "edit", edit_course_path(course.id), method: :get, class: "btn btn-light" %>
+                                            <%= button_to "delete", { controller: :courses, action: "destroy", id: course.id }, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-light" %>                                                
+                                            <%# <%= link_to "add section", new_section_path(:test => course.id), class: "btn btn-light" %> 
+                                            <%= button_to "add section", new_section_path, class: "btn btn-light", method: :get, params: {courseid: course.id} %>
+                                        </div>
+                                    <% end %>
+                                    </div>
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        <%= course.name %>
+                                    </h5>
+                                    <p class="card-text">
+                                        <%= course.description %>
+                                    </p>
+                                    <!-- Course details and action buttons -->
+                                    <div class="d-flex justify-content-start">
+                                        <a class="btn Hiver-2023-2-hex">
+                                            <%= course.credit_hours.to_s + " Units" %>
+                                        </a>
+                                        <a class="btn ms-2 Hiver-2023-3-hex">
+                                            <%= course.class_number.to_s.first + "xxx" %>
+                                        </a>
+                                        <a class="btn ms-2 Hiver-2023-5-hex">Columbus</a>
+                                        <!-- Button for toggling section details -->
+                                        <a class="btn sectionBtn ms-2 " data-bs-toggle="collapse"
+                                            data-bs-target=".collapseSection-<%= course.id %>" role="button"
+                                            aria-expanded="false" aria-controls="collapseSection">
+                                            View Sections
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Iterate through sections for the course -->
+                                <% course.sections.each_with_index do |section, index| %>
+                                    <!-- Section information container -->
+                                    <div class="collapse collapseSection-<%= course.id %>"
+                                        id="collapseSection-<%= course.id %>-<%= index %>">
+                                        <div class="card card-body d-flex justify-content-start">
+                                            <!-- Section details -->
+
+                                            <div class="section-align">
+                                                <h5 class="section-header">Start time: <%= section.start_time %>  </h5>
+
+                                                <% if (current_user) && (current_user.role.eql? "Admin") && (current_user.is_approved) %>
+                                                    <div class="btn-group" role="group">
+                                                        <%= button_to "edit", edit_section_path(section.id), method: :get, class: "btn btn-light" %>
+                                                        <%= button_to "delete", { controller: :sections, action: "destroy", id: section.id }, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-light" %>                                                
+                                                    </div>
+                                                <% end %>
+                                                <% if (current_user) && (current_user.role.eql? "Student") && section.graders_needed > 0 %>
+                                                    <% application = current_user.student_applications.find_by(section_id: section.id) %>
+                                                    <div class="btn-group" role="group">
+                                                        <% if !application %>
+                                                            <%= link_to "apply", new_student_application_path(section_id: section.id), class: "btn btn-light" %> 
+                                                        <% else %>
+                                                            <%= link_to "edit", edit_student_application_path(application, section_id: section.id), method: :get, class: "btn btn-light" %> 
+                                                        <% end %>                                             
+                                                    </div>
+                                                <% end %>
+                                                
+                                            </div>
+
+                                            <h5>End time: <%= section.end_time %>
+                                            
+                                            <% 
+                                                secInstructor = SectionInstructor.find_by(section_id: section.id)
+                                                if secInstructor
+                                                    instructor = User.find(SectionInstructor.find_by(section_id: section.id).instructor_id)
+                                                end 
+                                            %>
+                                            <% if instructor %>
+                                                <h5> 
+                                                    <%= "Taught by: #{instructor.first_name} #{instructor.last_name} (#{instructor.email})"%>
+                                                </h5>
+                                            <% end %>
+
+                                            <h5>Campus: <%= section.campus %>
+                                            </h5>
+
+
+                                            <% if section.term=='1232' %>
+                                                <h5>Term: Spring 2023</h5>
+                                                <% else %>
+                                                    <h5>Term: <%= section.term %>
+                                                    </h5>
+                                                    <% end %>
+                                                        <h5>Instruction mode: <%= section.instructionMode %>
+                                                        </h5>
+                                                        <h5>#Graders needed: <%= section.graders_needed %>
+                                                        </h5>
+                                                        <% if section.is_lab==true %>
+                                                            <h5>LAB</h5>
+                                                            <% else %>
+                                                                <h5>LEC</h5>
+                                                                <% end %>
+
+                                                                <h5>Meeting Days:</h5> 
+                                            
+                                            <div class="btn-group" role="group" aria-label="Days of the Week">
+                                                <div  class="btn btn-outline-primary <%= section.monday? && 'active' %>">Mon</div>
+                                                <div  class="btn btn-outline-primary <%= section.tuesday? && 'active' %>">Tue</div>
+                                                <div  class="btn btn-outline-primary <%= section.wednesday? && 'active' %>">Wed</div>
+                                                <div  class="btn btn-outline-primary <%= section.thursday? && 'active' %>">Thu</div>
+                                                <div  class="btn btn-outline-primary <%= section.friday? && 'active' %>">Fri</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% end %>
+                            </div>
+                        </div>
+                        <% end %>
+                            <div class="collapse" id="collapseSection">
+                            </div>
+                </div>
+                </ul>
+                <% else %>
+                <p> No courses found.</p>
+                <% end %>
+            </div>
+        </div>
+<!-- Search bars for the exact matches -->
+        <div class="col-md-4">
+            <h3>Filters</h3>
+            <%= search_form_for @q, url: search_courses_path do |f| %>
+                <div class="field">
+                    <%= f.label :name_cont, "Search by course name:", class:"labels"%>
+                    <%= f.search_field :name_cont, class:"form-control"%> 
+                    <%= f.submit "Search", class:"btn ms-2 Hiver-2023-5-hex"%>
+                </div>
+                <div class="field">
+                    <%= f.label :class_number_eq, "Search by class number:", class:"labels"%>
+                    <%= f.search_field :class_number_eq, type: :number, class:"form-control"%>
+                    <%= f.submit "Search", class:"btn ms-2 Hiver-2023-5-hex"%>
+                </div>
+
+            <% end %>
+
+             <!-- Buttons to filter the courses by level --> 
+            <div class="class levels">
+                <h3>Search By Class Level:</h3>
+                
+                <table class=buttons>
+                    <tr>
+                    <div class="row">
+                        <td><%= button_to "1xxx", courses_tag_path(tag: "1xxx"), method: :get, class: "btn ms-2 Hiver-2023-3-hex", style: "width: 20"%>
+                        <td><%= button_to "2xxx", courses_tag_path(tag: "2xxx"), method: :get, class: "btn ms-2 Hiver-2023-3-hex", style: "width: 20"%>
+                        <td><%= button_to "3xxx", courses_tag_path(tag: "3xxx"), method: :get, class: "btn ms-2 Hiver-2023-3-hex", style: "width: 20"%>
+                        <td><%= button_to "4xxx", courses_tag_path(tag: "4xxx"), method: :get, class: "btn ms-2 Hiver-2023-3-hex", style: "width: 20"%>
+                    </div>
+                    <div class="row">
+                    <tr>
+                        <td><%= button_to "5xxx", courses_tag_path(tag: "5xxx"), method: :get, class: "btn ms-2 Hiver-2023-3-hex", style: "width: 20"%>
+                        <td><%= button_to "6xxx", courses_tag_path(tag: "6xxx"), method: :get, class: "btn ms-2 Hiver-2023-3-hex", style: "Alma Mono"%>
+                        <td><%= button_to "7xxx", courses_tag_path(tag: "7xxx"), method: :get, class: "btn ms-2 Hiver-2023-3-hex", style: "Alma Mono"%>
+                        <td><%= button_to "8xxx", courses_tag_path(tag: "8xxx"), method: :get, class: "btn ms-2 Hiver-2023-3-hex", style: "Alma Mono"%>
+                    </div>
+                </table>          
+            </div>
+            <div class = "graders_needed">
+            <%= button_to "Courses Needing Graders", courses_graders_needed_path, method: :get, class: "btn ms-2 Hiver-2023-4-hex", style: "width: 20"%>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <%= pagy_nav(@pagy).html_safe %>
+</div>

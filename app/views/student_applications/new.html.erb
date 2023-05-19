@@ -1,0 +1,51 @@
+<div class="container mt-3">
+<h3>Apply to Grade for <%= "CSE" + @section.course.class_number.to_s + ": " + @section.course.name %></h3>
+  <%= form_for @student_application, html: {class: "form"}, method: :post do |f| %>
+
+    <div class="form-group mt-3">
+      <%= f.hidden_field :section_id, value: @section.id %>
+    </div>
+
+    <div class="form-group mt-3">
+      <%= f.hidden_field :section_id, value: @section.id %>
+    </div>
+
+    <div class="form-group mt-3">
+      <%= f.hidden_field :date, value: Date.today %>
+    </div>
+
+    <div class="form-group mt-3">
+      <%= f.label :first_name, "First Name" %>
+      <%= f.text_field :first_name, value: current_user.first_name, class: "form-control", readonly: true %>
+    </div>
+
+    <div class="form-group mt-3">
+      <%= f.label :last_name, "Last Name" %>
+      <%= f.text_field :last_name, value: current_user.last_name, class: "form-control", readonly: true %>
+    </div>
+
+    <div class="form-group mt-3">
+      <%= f.label :email, "Email" %>
+      <%= f.text_field :email, value: current_user.email, class: "form-control", readonly: true %>
+    </div>
+
+    <div class="form-group mt-3">
+      <%= f.label :temp_grade_received, "Grade Received [A, A-, B, B+, B-, C+, C, C-, D+, D , E] (Leave blank if course not taken)" %>
+      <%= f.text_field :temp_grade_received, class: "form-control" %>
+    </div>
+     
+     <%
+     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+     meeting_days = days.select { |day| @section[day.downcase] }.join(", ")
+     %>
+     <div class="form-group mt-3">
+      <%= f.label :student_available, "Are you available from " + @section.start_time.to_s + "-" + @section.end_time.to_s + " on " + meeting_days%>
+      <%= f.check_box :student_available %>
+    </div>
+    <div class="form-group mt-3">
+      <%= f.label :student_preference, "How much do you prefer this section?" %>
+      <%= f.range_field :student_preference, in: 0..5, class: "form-control-range", list: "preference-labels" %>
+    </div>
+    <%= f.submit "Apply", class: "btn btn-primary mt-3" %>
+  <% end %>
+</div>

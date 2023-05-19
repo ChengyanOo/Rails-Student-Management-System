@@ -1,0 +1,72 @@
+<!-- Navigation bar container -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <!-- Navbar brand/logo -->
+        <a class="navbar-brand" href="#">Admin User</a>
+        <!-- Navbar toggler for responsive design -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarNav" list-style-type: none>
+            <ul class="navbar-nav">
+                <!-- Course link -->
+                <li class="nav-item ms-4">
+                  <% if user_signed_in? && current_user.is_approved == true%>
+                    <%= link_to "Approve Page", approve_path, method: :get, class: 'nav-link' %>
+                  <% end %>
+                </li>
+                <li class="nav-item ms-4">
+                  <% if user_signed_in? && current_user.is_approved == true%>
+                    <%= link_to "Evaluation", evaluations_path, method: :get, class: 'nav-link' %>
+                  <% end %>
+                </li>
+                <li class="nav-item ms-4">
+                   <% if user_signed_in? && current_user.is_approved == true%>
+                    <%= link_to "Reload Database", "#", class: 'nav-link', "data-bs-toggle" => "modal", "data-bs-target" => "#reloadDatabaseModal" %>
+                  <% end %>
+                  
+                  <div class="modal fade" id="reloadDatabaseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h1 class="modal-title fs-5" id="exampleModalLabel">Please enter sememster code</h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                  <%= form_with url: fetch_data_path, method: :get, id: 'semester-code-form' , local: true do |form| %>
+                                      <div class="form-group">
+                                          <%= form.label :semester_code, "Semester Code" %>
+                                              <%= form.number_field :semester_code, class: 'form-control' , required: true, value: 1232 %>
+                                      </div>
+                                      <% end %>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                                  <%= button_tag "Submit" , type: 'submit' , form: 'semester-code-form' , class: 'btn', 'data-bs-dismiss'=> 'modal' %>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </li>
+                <!-- Signout link -->
+                <li class="nav-item ms-5">
+                  <% if user_signed_in? %>                  
+                    <%= link_to image_tag("Person_Icon", width: 17, height:20), edit_user_registration_path, method: :get, class: 'nav-link' %>
+                  <% end %>
+                </li>
+            </ul>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                   <% if user_signed_in? %> 
+                        <%= link_to "Sign Out", destroy_user_session_path, data: { "turbo-method": :delete }, class: 'nav-link' %>
+                   <% end %>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+

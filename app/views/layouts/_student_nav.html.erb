@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <!-- Navbar brand/logo -->
+        <a class="navbar-brand" href="#">Student User</a>
+        <!-- Navbar toggler for responsive design -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Profile Page link -->
+                <li class="nav-item ml-auto">
+                  <% if user_signed_in? %>                  
+                    <%= link_to image_tag("Person_Icon", width: 17, height:20), edit_user_registration_path, method: :get, class: 'nav-link' %>
+                  <% end %>
+                </li>
+                </li>
+            </ul>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                   <% if user_signed_in? %> 
+                        <%= link_to "Sign Out", destroy_user_session_path, data: { "turbo-method": :delete }, class: 'nav-link' %>
+                   <% end %>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</nav>

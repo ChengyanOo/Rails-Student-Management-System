@@ -1,0 +1,101 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <!-- Navbar brand/logo -->
+        <a class="navbar-brand" href="#">Approve Page</a>
+        <!-- Navbar toggler for responsive design -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Course link -->
+                <li class="nav-item ml-auto">
+                  <% if user_signed_in? %>
+                    <%= link_to "Course Catalog", course_view_path, method: :get, class: 'nav-link' %>
+                  <% end %>
+                </li>
+            </ul>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                   <% if user_signed_in? %> 
+                        <%= link_to "Sign Out", destroy_user_session_path, data: { "turbo-method": :delete }, class: 'nav-link' %>
+                   <% end %>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<body>
+  <div class="container">
+    <div class="d-flex flex-column">
+        <h3 class="font-weight-bold" style="font-family:sans-serif; margin-top: 10px;">Approve Users: &nbsp;</h3>
+        <%#Admin can approve users %>
+            <table class="table table-sm ml-4 table-striped" style="max-width: 50rem; margin-bottom: 75px;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Approve</th>
+                        <th scope="col">Disapprove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @users.each do |user| %>
+                        <tr>
+                            <td><%= user.first_name%></td>
+                            <td><%= user.last_name%></td>
+                            <td><%= user.email%></td>
+                            <td><%= user.role%></td>
+                            <td><%= button_to "Approve", approve_user_approved_path(user), method: :put, class: 'btn btn-outline-dark' %></td>
+                            <td><%= button_to "Disapprove", disapprove_user_approved_path(user), method: :delete, class: 'btn btn-outline-dark' %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="d-flex flex-column">
+        <h3 class="font-weight-bold" style="font-family:sans-serif">Student Applications: &nbsp;</h3>
+        <%#Admin can approve users %>
+            <table class="table table-sm ml-4 table-striped" style="max-width: 80rem;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Section #</th>
+                        <th scope="col">Course</th>
+                        <th scope="col">Instructor Recommendation</th>
+                        <th scope="col">Accept</th>
+                        <th scope="col">Decline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                 <thead class="thead-dark">
+                 <%@student_applications.each do |application|%>
+                   <tr>
+                    <td><%= application["first_name"]%></td>
+                    <td><%= application["last_name"]%></td>
+                    <td><%= application["email"]%></td>
+                    <td><%= application["section_id"]%></td>
+                    <td><%= application["name"]%></td>
+                    <td><%= application[:number_of_recommendations]%></td>
+                    <td><%= button_to "Assign", assign_path(section_id: application["section_id"], user_id: application["id"]), method: :put, class: 'btn btn-outline-dark' %></td>
+                    <td><%= button_to "Deny", deny_path(section_id: application["section_id"]), method: :delete, class: 'btn btn-outline-dark' %></td>
+                   </tr>
+                  <% end %>
+                  </thead>
+                </tbody>
+            </table>
+    </div>
+  </div>
+</body>

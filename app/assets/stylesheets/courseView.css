@@ -1,0 +1,134 @@
+.Hiver-2023-1-hex {
+    background-color: #D9A0AB;
+}
+
+.Hiver-2023-2-hex {
+    background-color: #8AA1BF;
+}
+
+.Hiver-2023-3-hex {
+    background-color: #8593A6;
+}
+
+.Hiver-2023-4-hex {
+    background-color: #D9C1B4;
+}
+
+.Hiver-2023-5-hex {
+    background-color: #D9A79C;
+}
+
+.card {
+    transition: all 0.3s ease;
+    border-radius: 0;
+}
+
+.card:hover {
+    background-color: #8593A6;
+    color: #fff;
+    border-radius: 0;
+}
+
+.card:hover .btn {
+    border-color: #8593A6;
+    color: black;
+    background-color: #8593A6;
+}
+
+.card:hover .sectionBtn {
+    border-color: black;
+    color: white;
+    background-color: black;
+}
+
+.collapse h5 {
+    font-size: 15px !important;
+}
+
+
+.btn {
+    height: 1%;
+    border-radius: 0;
+    /* background-color: #D9C1B4; */
+    font-size: 12px;
+    font-weight: bold;
+    /* Additional styles can be added here */
+}
+
+.sectionBtn {
+    height: 1%;
+    border-radius: 0;
+    background-color: #D9C1B4;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.graders_needed {
+    text-align: left;
+    margin-top: 20px;
+}
+
+/* Pagy navigation with Bootstrap styles */
+
+.pagy-nav.pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 0.25rem;
+}
+
+.pagy-nav.pagination .page {
+    display: inline-block;
+    /* Updated from 'inline' to 'inline-block' */
+}
+
+.pagy-nav.pagination .page.disabled {
+    pointer-events: none;
+}
+
+.pagy-nav.pagination .page a,
+.pagy-nav.pagination .page.disabled span {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #8AA1BF;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    text-decoration: none;
+}
+
+.pagy-nav.pagination .page a:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.pagy-nav.pagination .page.active a,
+.pagy-nav.pagination .page.active span {
+    color: #fff;
+    background-color: #8AA1BF;
+    border-color: #8AA1BF;
+}
+
+.pagy-nav.pagination .page.disabled a,
+.pagy-nav.pagination .page.disabled span {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+.align {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.section-align {
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+}
+.section-header {
+    margin-right: 10px;
+}

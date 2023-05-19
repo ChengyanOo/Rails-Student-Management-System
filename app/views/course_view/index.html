@@ -1,0 +1,23 @@
+<div class="modal fade" id="reloadDatabaseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Please enter sememster code</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <%= form_with url: fetch_data_path, method: :get, id: 'semester-code-form' , local: true do |form| %>
+                    <div class="form-group">
+                        <%= form.label :semester_code, "Semester Code" %>
+                            <%= form.number_field :semester_code, class: 'form-control' , required: true, value: 1232 %>
+                    </div>
+                    <% end %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                <%= button_tag "Submit" , type: 'submit' , form: 'semester-code-form' , class: 'btn'
+                    , 'data-bs-dismiss'=> 'modal' %>
+            </div>
+        </div>
+    </div>
+</div>
